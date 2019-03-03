@@ -9,15 +9,17 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-
-import { switchMenuLeftOpen } from '../redux/switchMenuLeftOpen';
+import BasketIcon from '@material-ui/icons/ShoppingBasket';
+import Button from '@material-ui/core/Button';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import Badge from '@material-ui/core/Badge';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import Chip from '@material-ui/core/Chip';
 
 const drawerWidth = 240;
 
 const styles = theme => ({
-    root: {
-        display: 'flex',
-    },
     appBar: {
         transition: theme.transitions.create(['margin', 'width'], {
             easing: theme.transitions.easing.sharp,
@@ -39,80 +41,117 @@ const styles = theme => ({
     hide: {
         display: 'none',
     },
-    drawer: {
-        width: drawerWidth,
-        flexShrink: 0,
+    chip: {
+        margin: theme.spacing.unit,
     },
-    drawerPaper: {
-        width: drawerWidth,
-    },
-    drawerHeader: {
-        display: 'flex',
-        alignItems: 'center',
-        padding: '0 8px',
-        ...theme.mixins.toolbar,
-        justifyContent: 'flex-end',
-    },
-    content: {
+    grow: {
         flexGrow: 1,
-        padding: theme.spacing.unit * 3,
-        transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        marginLeft: -drawerWidth,
     },
-    contentShift: {
-        transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        marginLeft: 0,
+    badge: {
+        top: '50%',
+        right: -3,
+        // The border color match the background color.
+        border: `2px solid ${
+            theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[900]
+            }`,
     },
 });
 
 import './Header.scss';
+import eventSwitchLeftMenu from "../modules/events";
 
 class Header extends React.PureComponent{
     static propTypes = {
         classes: PropTypes.object.isRequired,
         theme: PropTypes.object.isRequired,
-        menuLeftOpen: PropTypes.object.isRequired,
     };
 
-    componentWillMount() {
-        this.props.dispatch( switchMenuLeftOpen(this.props.menuLeftOpen.isOpen) );
-    }
+    state = {
+        anchorEl: null,
+        isOpenLeftMenu: false,
+    };
+
+    handleMenu = event => {
+        this.setState({ anchorEl: event.currentTarget });
+    };
+
+    handleClose = () => {
+        this.setState({ anchorEl: false });
+    };
+
+    setIsOpenLeftMenu = (isOpen) => {
+        this.setState({isOpenLeftMenu: isOpen});
+    };
+
+    componentDidMount() {
+        eventSwitchLeftMenu.addListener('ESetClosedLeftMenu', this.setIsOpenLeftMenu);
+    };
+
+    componentWillUnmount() {
+        eventSwitchLeftMenu.removeListener('ESetClosedLeftMenu', this.setIsOpenLeftMenu);
+    };
 
     handleDrawerOpen = () => {
-        this.props.dispatch( switchMenuLeftOpen(true) );
+        const isOpen = true;
+        eventSwitchLeftMenu.emit('ESetOpenLeftMenu', isOpen);
+        this.setIsOpenLeftMenu(isOpen);
     };
 
     render(){
-        const { classes, theme } = this.props;
-        const open = this.props.menuLeftOpen.isOpen;
-
+        const { classes } = this.props;
+        const { anchorEl } = this.state;
+        const isOpenBasket = Boolean(anchorEl);
+        const isOpen = this.state.isOpenLeftMenu;
         return(
             <Fragment>
                 <CssBaseline />
                 <AppBar
-                    position="fixed"
-                    className={classNames(this.props.classes.appBar, {
-                        [this.props.classes.appBarShift]: open,
+                    position="static"
+                    className={classNames(classes.appBar, {
+                        [classes.appBarShift]: isOpen,
                     })}
                 >
-                    <Toolbar disableGutters={!open}>
+                    <Toolbar disableGutters={!isOpen}>
                         <IconButton
                             color="inherit"
-                            aria-label="Open drawer"
+                            aria-label="Menu"
                             onClick={this.handleDrawerOpen}
-                            className={classNames(this.props.classes.menuButton, open && this.props.classes.hide)}
+                            className={classNames(classes.menuButton, isOpen && classes.hide)}
                         >
                             <MenuIcon />
                         </IconButton>
-                        <Typography variant="h6" color="inherit" noWrap>
+                        <Typography variant="h6" color="inherit" className={classes.grow}>
                             Shop
                         </Typography>
+                        <Chip label="Total: BYN" className={classes.chip} />
+                        <IconButton
+                            aria-owns={isOpenBasket ? 'menu-appbar' : undefined}
+                            aria-haspopup="true"
+                            onClick={this.handleMenu}
+                            color="inherit"
+                            aria-label="menu-appbar"
+                            className={classNames(classes.menuButton)}>
+                            <Badge badgeContent={4} color="primary" classes={{ badge: classes.badge }}>
+                                <ShoppingCartIcon />
+                            </Badge>
+                        </IconButton>
+                        <Menu
+                            id="menu-appbar"
+                            anchorEl={anchorEl}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={isOpenBasket}
+                            onClose={this.handleClose}
+                        >
+                            <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+                            <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                        </Menu>
                     </Toolbar>
                 </AppBar>
 
@@ -121,10 +160,4 @@ class Header extends React.PureComponent{
     }
 }
 
-const mapStateToProps = function (state) {
-    return {
-        menuLeftOpen: state.menuLeftOpen,
-    };
-};
-
-export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(Header));
+export default (withStyles(styles, { withTheme: true })(Header));

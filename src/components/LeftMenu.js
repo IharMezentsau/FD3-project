@@ -1,32 +1,36 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import PhoneIcon from '@material-ui/icons/StayCurrentPortrait';
+import NotebookIcon from '@material-ui/icons/Laptop';
+import ContactIcon from '@material-ui/icons/Contacts';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import SwipeableViews from 'react-swipeable-views';
+import Grid from '@material-ui/core/Grid';
 
-import { switchMenuLeftOpen } from '../redux/switchMenuLeftOpen';
+
+import Catalog from './Catalog';
+import Filter from './Filter';
 
 import './LeftMenu.scss';
+import eventSwitchLeftMenu from "../modules/events";
 
 const drawerWidth = 240,
     styles = theme => ({
+    root: {
+        backgroundColor: theme.palette.background.paper,
+        width: 500,
+    },
     drawer: {
         width: drawerWidth,
         flexShrink: 0,
@@ -47,27 +51,49 @@ class LeftMenu extends React.PureComponent {
 
     static propTypes = {
         classes: PropTypes.object.isRequired,
-        menuLeftOpen: PropTypes.object.isRequired,
+        theme: PropTypes.object,
     };
 
-    componentWillMount() {
-        this.props.dispatch( switchMenuLeftOpen(this.props.menuLeftOpen.isOpen) );
-    }
+    state = {
+        value: 0,
+        isOpenLeftMenu: false,
+    };
+
+    handleChange = (event, value) => {
+        this.setState({ value });
+    };
+
+    handleChangeIndex = index => {
+        this.setState({ value: index });
+    };
+
+    componentDidMount() {
+        eventSwitchLeftMenu.addListener('ESetOpenLeftMenu', this.setIsOpenLeftMenu);
+    };
+
+    componentWillUnmount() {
+        eventSwitchLeftMenu.removeListener('ESetOpenLeftMenu', this.setIsOpenLeftMenu);
+    };
 
     handleDrawerClose = () => {
-        this.props.dispatch( switchMenuLeftOpen(false) );
+        const isOpen = false;
+        eventSwitchLeftMenu.emit('ESetClosedLeftMenu', isOpen);
+        this.setIsOpenLeftMenu(isOpen);
+    };
+
+    setIsOpenLeftMenu = (isOpen) => {
+        this.setState({isOpenLeftMenu: isOpen});
     };
 
     render() {
-
-        const open = this.props.menuLeftOpen.isOpen;
+        const isOpen = this.state.isOpenLeftMenu;
 
         return(
             <Drawer
                 className={this.props.classes.drawer}
                 variant="persistent"
                 anchor="left"
-                open={open}
+                open={isOpen}
                 classes={{
                     paper: this.props.classes.drawerPaper,
                 }}
@@ -78,30 +104,33 @@ class LeftMenu extends React.PureComponent {
                     </IconButton>
                 </div>
                 <Divider />
-                <List>
-                    <ListItem button key='key-MobilePhones'>
-                        <ListItemIcon><PhoneIcon /></ListItemIcon>
-                        <ListItemText primary='Mobile Phones' />
-                    </ListItem>
-                </List>
+                    <Tabs
+                        value={this.state.value}
+                        onChange={this.handleChange}
+                        indicatorColor="primary"
+                        textColor="primary"
+                    >
+                        <Tab label="Catalog" />
+                        <Tab label="Filter" />
+                    </Tabs>
                 <Divider />
-                <List>
-                    {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    ))}
-                </List>
+                <SwipeableViews
+                    axis={this.props.theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                    index={this.state.value}
+                    onChangeIndex={this.handleChangeIndex}
+                >
+                    <Catalog />
+                    <Filter />
+                </SwipeableViews>
+
             </Drawer>
         );
     }
 }
 
-const mapStateToProps = function (state) {
-    return {
-        menuLeftOpen: state.menuLeftOpen,
-    };
-};
+const mapStateToProps = ({state}) => ({
+
+});
 
 export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(LeftMenu));
+

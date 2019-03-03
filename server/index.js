@@ -1,19 +1,28 @@
-const express = require('express'),
-    path = require('path'),
-    http = require('http'),
-    app = express();
+// app.js
 
-// Point static path to dist
-app.use(express.static(path.join(__dirname, '..', '/')));
+var express = require('express');
+var bodyParser = require('body-parser');
 
-const routes = require('./routes');
-app.use('/', routes);
+var product = require('./routes/product'); // Imports routes for the products
+var app = express();
 
-/** Get port from environment and store in Express. */
-const port = process.env.PORT || '3000';
-app.set('port', port);
 
-/** Create HTTP server. */
-const server = http.createServer(app);
-/** Listen on provided port, on all network interfaces. */
-server.listen(port, () => console.log(`Server Running on port ${port}`));
+// Set up mongoose connection
+var mongoose = require('mongoose');
+var dev_db_url = "mongodb://root:root123456@ds247410.mlab.com:47410/fd3projectmezentsau";
+var mongoDB = process.env.MONGODB_URI || dev_db_url;
+mongoose.connect(mongoDB);
+mongoose.Promise = global.Promise;
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use('/shop/', product);
+
+var port = 3000;
+
+app.listen(port, () => {
+    console.log('Server is up and running on port numner ' + port);
+});

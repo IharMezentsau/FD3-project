@@ -1,42 +1,46 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import { withStyles } from '@material-ui/core/styles';
+import {Provider} from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 
-import combinedReducer from '../redux/reducers.js';
+import createStore from '../store';
+const store = createStore();
 
-let store=createStore(combinedReducer);
+import './IShop.scss';
+
 
 import Header from "./Header";
 import LeftMenu from "./LeftMenu";
 import Content from "./Content";
+import { withStyles } from '@material-ui/core/styles';
 
-import './IShop.scss';
 
-const styles = theme => ({
+const styles = () => ({
     root: {
-        display: 'flex',
+        //display: 'flex',
+        width: '100%',
     },
 });
 
 class IShop extends React.PureComponent {
-    static propTypes = {
-        classes: PropTypes.object.isRequired,
-        theme: PropTypes.object.isRequired,
-    };
 
     render() {
+        const { classes } = this.props;
         return(
             <Provider store={store}>
-                <div className={this.props.classes.root}>
-                    <Header />
-                    <LeftMenu/>
-                    <Content/>
+                <div className={classes.root}>
+                    <Header/>
+                    <BrowserRouter>
+                        <div>
+                            <LeftMenu/>
+                            <Content/>
+                        </div>
+                       </BrowserRouter>
                 </div>
             </Provider>
-        )
+        );
     }
-};
 
+};
 export default withStyles(styles, { withTheme: true })(IShop);
+

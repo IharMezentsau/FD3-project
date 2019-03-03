@@ -8,7 +8,7 @@ var product_controller = require('../controllers/product');
 // a simple test url to check that all of our files are communicating correctly.
 router.get('/test', product_controller.test);
 
-router.get('/mobile/', product_controller.product_details);
+router.get('/mobiles/', product_controller.product_details);
 
 
 

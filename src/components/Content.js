@@ -10,7 +10,6 @@ import CardList from './CardList';
 import GridItems from './GridItems';
 import Home from './Home';
 
-import eventSwitchLeftMenu from "../modules/events";
 
 const styles = theme => ({
     drawerHeader: {
@@ -32,6 +31,7 @@ const styles = theme => ({
 });
 
 import './Content.scss';
+import Mobile from "./Mobile";
 
 class Content extends React.Component {
 
@@ -46,19 +46,19 @@ class Content extends React.Component {
             <main
                 className={classNames(this.props.classes.content)}
             >
-                <div className={this.props.classes.drawerHeader} />
 
                 <Route path="/" exact component={Home} />
                 <Route path="/mobiles" component={GridItems} />
-                <Route path="/mobile/:prodid" component={GridItems} />
                 <Route path="/notebooks" component={GridItems} />
                 <Route path="/notebook/:prodid" component={GridItems} />
                 <Route path="/contacts" component={GridItems} />
+
 
             </main>
 
         );
     }
+
 }
 
 export default (withStyles(styles, { withTheme: true })(Content));

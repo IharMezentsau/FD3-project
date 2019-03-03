@@ -36,7 +36,6 @@ class IShop extends React.PureComponent {
                         <div>
                             <LeftMenu/>
                             <Content/>
-
                         </div>
                     </BrowserRouter>
                 </div>

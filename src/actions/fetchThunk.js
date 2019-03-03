@@ -2,10 +2,11 @@ import isoFetch from 'isomorphic-fetch';
 
 import { itemsLoading, itemsError, itemsSet } from "./items";
 
-const itemsThunk = (dispatch) => {
+const itemsThunk = (dispatch, query) => {
     return function() {
-        dispatch( itemsLoading() );
-        isoFetch("http://localhost/PVT/books.json")
+        console.log(query);
+        dispatch( itemsLoading() );//`http://localhost:3000/shop/${query}`
+        isoFetch(`http://localhost:3000/shop${query}`)
             .then( (response) => { // response - HTTP-ответ
                 if (!response.ok) {
                     let Err = new Error("fetch error " + response.status);

@@ -28,38 +28,36 @@ class CardList extends React.PureComponent{
     static propTypes = {
         classes: PropTypes.object.isRequired,
         device: PropTypes.shape({
-            _id: PropTypes.object.isRequired,
+            _id: PropTypes.string.isRequired,
             title: PropTypes.string.isRequired,
             img: PropTypes.string.isRequired,
             text: PropTypes.string.isRequired,
             price: PropTypes.number,
-            sizeScreen: PropTypes.number.isRequired,
-            technologyScreen: PropTypes.string.isRequired,
-            os: PropTypes.string,
-            ram: PropTypes.number,
-            flashMemory: PropTypes.number.isRequired,
-            camera: PropTypes.number,
-            color: PropTypes.string
         }),
+        type: PropTypes.string.isRequired,
     };
     render() {
+        let {type, classes, device} = this.props,
+            link = `${type.slice(0, -1)}/${device._id}`;
         return (
-            <Card className={this.props.classes.card}>
+            <Card className={classes.card}>
                 <CardActionArea>
                     <CardMedia
                         component="img"
-                        alt={"this.props.device.title"}
-                        className={this.props.classes.media}
-                        height="140"
-                        image={"this.props.device.img"}
-                        title={"this.props.device.title"}
+                        alt={`logo-${device.title}`}
+                        className={classes.media}
+                        image={device.img}
+                        title={device.title}
                     />
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="h2">
-                            {"this.props.device.title"}
+                            {device.title}
                         </Typography>
                         <Typography component="p">
-                            {"this.props.device.text"}
+                            {device.text}
+                        </Typography>
+                        <Typography gutterBottom variant="h5">
+                            Price: {device.price}Р
                         </Typography>
                     </CardContent>
                 </CardActionArea>
@@ -71,7 +69,7 @@ class CardList extends React.PureComponent{
                         </Button>
                     </Tooltip>
                     <Tooltip disableFocusListener disableTouchListener title="Add to basket">
-                        <NavLink to="/notebook/15" exact className="PageLink" activeClassName="ActivePageLink">
+                        <NavLink to={link} exact className="PageLink" activeClassName="ActivePageLink">
                             <Button size="small" color="primary">
                                 More..
                             </Button>

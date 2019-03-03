@@ -1,8 +1,9 @@
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch,BrowserRouter } from 'react-router-dom';
 import classNames from 'classnames';
+import { NavLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 
 import CardList from './CardList';
@@ -32,7 +33,7 @@ const styles = theme => ({
 
 import './Content.scss';
 
-class Content extends React.PureComponent {
+class Content extends React.Component {
 
     static propTypes = {
         classes: PropTypes.object.isRequired,
@@ -41,19 +42,21 @@ class Content extends React.PureComponent {
 
     render() {
         return(
+
             <main
                 className={classNames(this.props.classes.content)}
             >
                 <div className={this.props.classes.drawerHeader} />
-                <Switch>
-                    <Route path="/" exact component={Home} />
-                    <Route path="/mobiles" component={GridItems} />
-                    <Route path="/mobile/:prodid" component={GridItems} />
-                    <Route path="/notebooks" component={GridItems} />
-                    <Route path="/notebook/:prodid" component={GridItems} />
-                    <Route path="/contacts" component={GridItems} />
-                </Switch>
+
+                <Route path="/" exact component={Home} />
+                <Route path="/mobiles" component={GridItems} />
+                <Route path="/mobile/:prodid" component={GridItems} />
+                <Route path="/notebooks" component={GridItems} />
+                <Route path="/notebook/:prodid" component={GridItems} />
+                <Route path="/contacts" component={GridItems} />
+
             </main>
+
         );
     }
 }

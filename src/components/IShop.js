@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Provider} from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 
 import createStore from '../store';
 const store = createStore();
@@ -13,6 +13,8 @@ import Header from "./Header";
 import LeftMenu from "./LeftMenu";
 import Content from "./Content";
 import { withStyles } from '@material-ui/core/styles';
+import Home from "./Home";
+import GridItems from "./GridItems";
 
 
 const styles = () => ({
@@ -34,8 +36,9 @@ class IShop extends React.PureComponent {
                         <div>
                             <LeftMenu/>
                             <Content/>
+
                         </div>
-                       </BrowserRouter>
+                    </BrowserRouter>
                 </div>
             </Provider>
         );

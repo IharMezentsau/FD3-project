@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import Tooltip from '@material-ui/core/Tooltip';
+import { NavLink } from 'react-router-dom';
 
 import './CardList.scss';
 
@@ -68,6 +69,13 @@ class CardList extends React.PureComponent{
                             <AddShoppingCartIcon />
                             Buy
                         </Button>
+                    </Tooltip>
+                    <Tooltip disableFocusListener disableTouchListener title="Add to basket">
+                        <NavLink to="/notebook/15" exact className="PageLink" activeClassName="ActivePageLink">
+                            <Button size="small" color="primary">
+                                More..
+                            </Button>
+                        </NavLink>
                     </Tooltip>
                 </CardActions>
             </Card>

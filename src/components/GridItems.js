@@ -36,6 +36,7 @@ class GridItems extends React.PureComponent {
     }
 
     render() {
+        console.log(parseInt(this.props.match.params.prodid));
         let itemsTag;
         if ( this.props.status <= 1 ) {
             itemsTag = <Fade in={true} unmountOnExit><CircularProgress/></Fade>;

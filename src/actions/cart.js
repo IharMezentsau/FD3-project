@@ -1,9 +1,14 @@
 const ADD_ITEM_TO_CART = "ADD_ITEM_TO_CART",
     REMOVE_ITEM_FROM_CART = "REMOVE_ITEM_TO_CART";
 
-const addItemToCart = item => ({
+const addItemToCart = items => ({
     type: ADD_ITEM_TO_CART,
-    payload: books
+    payload: items
 });
 
-export {ADD_ITEM_TO_CART, REMOVE_ITEM_FROM_CART, addItemToCart};
+const removeItemToCart = items => ({
+    type: ADD_ITEM_TO_CART,
+    payload: items
+});
+
+export {ADD_ITEM_TO_CART, REMOVE_ITEM_FROM_CART, addItemToCart, removeItemToCart};

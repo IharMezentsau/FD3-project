@@ -60,8 +60,8 @@ class GridItems extends React.PureComponent {
             itemsTag = "ошибка загрузки данных";
         } else {
             itemsTag = items.map(item => (
-                 <Grid key={`GridItem${item.id}`} item >
-                         <CardList device={item} type={this.props.match.url}/>
+                 <Grid key={`GridItem${item._id}`} item >
+                     <CardList device={item} type={this.props.match.url}/>
                  </Grid>
             ));
         };

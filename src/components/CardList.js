@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {connect} from "react-redux";
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -13,13 +14,21 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { NavLink } from 'react-router-dom';
 
 import './CardList.scss';
+import {addItemToCart} from "../actions/cart";
+import {itemsThunk} from "../actions/fetchThunk";
 
 const styles = {
     card: {
-        maxWidth: 240,
+        maxHeight: 400,
+        textAlign: 'center',
+        //maxWidth: 240,
     },
     media: {
-        objectFit: 'cover',
+        maxWidth: 240,
+        maxHeight: 200,
+        marginLeft: 'auto',
+
+        marginRight: 'auto',
     },
 };
 
@@ -36,6 +45,11 @@ class CardList extends React.PureComponent{
         }),
         type: PropTypes.string.isRequired,
     };
+
+    addToCard = () => {
+        this.props.dispatch( addItemToCart(this.props.device) );
+    };
+
     render() {
         let {type, classes, device} = this.props,
             link = `${type.slice(0, -1)}/${device._id}`;
@@ -56,24 +70,14 @@ class CardList extends React.PureComponent{
                         <Typography component="p">
                             {device.text}
                         </Typography>
-                        <Typography gutterBottom variant="h5">
-                            Price: {device.price}Р
-                        </Typography>
                     </CardContent>
                 </CardActionArea>
                 <CardActions>
                     <Tooltip disableFocusListener disableTouchListener title="Add to basket">
-                        <Button size="small" color="primary">
+                        <Button size="small" color="primary" onClick={this.addToCard}>
                             <AddShoppingCartIcon />
-                            Buy
+                            Buy {device.price}BYN
                         </Button>
-                    </Tooltip>
-                    <Tooltip disableFocusListener disableTouchListener title="Add to basket">
-                        <NavLink to={link} exact className="PageLink" activeClassName="ActivePageLink">
-                            <Button size="small" color="primary">
-                                More..
-                            </Button>
-                        </NavLink>
                     </Tooltip>
                 </CardActions>
             </Card>
@@ -81,4 +85,8 @@ class CardList extends React.PureComponent{
     }
 }
 
-export default withStyles(styles)(CardList);
+const mapStateToProps = ({cart}) => ({
+    cart: cart,
+});
+
+export default connect(mapStateToProps)(withStyles(styles)(CardList));

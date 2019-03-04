@@ -26,7 +26,7 @@ class Catalog extends React.PureComponent {
                             <ListItemText primary='Home' />
                         </ListItem>
                     </NavLink>
-                    <NavLink to="/mobiles/1" exact className="PageLink" activeClassName="ActivePageLink">
+                    <NavLink to="/mobiles" exact className="PageLink" activeClassName="ActivePageLink">
                         <ListItem button key='key-MobilePhones' >
                             <ListItemIcon><PhoneIcon /></ListItemIcon>
                             <ListItemText primary='Mobile Phones' />

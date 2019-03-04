@@ -99,9 +99,16 @@ class Header extends React.PureComponent{
 
     render(){
         const { classes } = this.props;
-        const { anchorEl } = this.state;
-        const isOpenBasket = Boolean(anchorEl);
-        const isOpen = this.state.isOpenLeftMenu;
+        let { anchorEl } = this.state,
+            isOpenBasket = Boolean(anchorEl),
+            isOpen = this.state.isOpenLeftMenu,
+            {cart} = this.props,
+            itemsBasket = cart.items.map((item, i) => <MenuItem  key={`menuItem-${item._id + i}`}>
+                <img width="40" height="40" alt={`logo-${item.title}`} src={item.img}  />{item.title}
+                </MenuItem>
+            ),
+            total = cart.items.reduce(((accumulator, currentValue) => accumulator + currentValue.price), 0);
+
         return(
             <Fragment>
                 <CssBaseline />
@@ -123,7 +130,7 @@ class Header extends React.PureComponent{
                         <Typography variant="h6" color="inherit" className={classes.grow}>
                             Shop
                         </Typography>
-                        <Chip label="Total: BYN" className={classes.chip} />
+                        <Chip label={`Total: ${total}BYN`} className={classes.chip} />
                         <IconButton
                             aria-owns={isOpenBasket ? 'menu-appbar' : undefined}
                             aria-haspopup="true"
@@ -131,7 +138,7 @@ class Header extends React.PureComponent{
                             color="inherit"
                             aria-label="menu-appbar"
                             className={classNames(classes.menuButton)}>
-                            <Badge badgeContent={4} color="primary" classes={{ badge: classes.badge }}>
+                            <Badge badgeContent={cart.items.length} color="primary" classes={{ badge: classes.badge }}>
                                 <ShoppingCartIcon />
                             </Badge>
                         </IconButton>
@@ -149,8 +156,7 @@ class Header extends React.PureComponent{
                             open={isOpenBasket}
                             onClose={this.handleClose}
                         >
-                            <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                            <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                            {itemsBasket}
                         </Menu>
                     </Toolbar>
                 </AppBar>
@@ -160,4 +166,8 @@ class Header extends React.PureComponent{
     }
 }
 
-export default (withStyles(styles, { withTheme: true })(Header));
+const mapStateToProps = ({cart}) => ({
+    cart: cart,
+});
+
+export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(Header));

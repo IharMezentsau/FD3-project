@@ -48,11 +48,12 @@ class Content extends React.Component {
             >
 
                 <Route path="/" exact component={Home} />
-                <Route path="/mobiles" component={GridItems} />
+
                 <Route path="/notebooks" component={GridItems} />
                 <Route path="/notebook/:prodid" component={GridItems} />
                 <Route path="/contacts" component={GridItems} />
-
+                <Route path="/:type" component={GridItems} />
+                <Route path="/:type/:prodid" component={GridItems} />
 
             </main>
 

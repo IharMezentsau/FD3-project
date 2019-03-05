@@ -29,9 +29,9 @@ const styles = theme => ({
     },
 });
 
-import './Mobile.scss';
+import './Product.scss';
 
-class Mobile extends React.PureComponent{
+class Product extends React.PureComponent{
 
     static propTypes = {
         classes: PropTypes.object.isRequired,
@@ -52,7 +52,7 @@ class Mobile extends React.PureComponent{
     };
 
     componentDidMount() {
-        this.props.dispatch( itemsThunk(this.props.dispatch, this.props.match.url) );
+
     }
 
     render() {
@@ -95,4 +95,4 @@ const mapStateToProps = ({items}) => ({
     status: items.status,
 });
 
-export default connect(mapStateToProps)(withStyles(styles)(Mobile));
+export default connect(mapStateToProps)(withStyles(styles)(Product));

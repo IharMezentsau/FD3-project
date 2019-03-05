@@ -23,7 +23,7 @@ import Catalog from './Catalog';
 import Filter from './Filter';
 
 import './LeftMenu.scss';
-import eventSwitchLeftMenu from "../modules/events";
+import {eventSwitchLeftMenu} from "../modules/events";
 
 const drawerWidth = 240,
     styles = theme => ({

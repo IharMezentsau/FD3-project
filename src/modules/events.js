@@ -1,5 +1,6 @@
 import {EventEmitter} from 'events';
 
-let eventSwitchLeftMenu = new EventEmitter();
+let eventSwitchLeftMenu = new EventEmitter(),
+    eventOpenBasket = new EventEmitter();
 
-export default eventSwitchLeftMenu;
+export {eventSwitchLeftMenu, eventOpenBasket};

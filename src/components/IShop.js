@@ -15,6 +15,7 @@ import Content from "./Content";
 import { withStyles } from '@material-ui/core/styles';
 import Home from "./Home";
 import GridItems from "./GridItems";
+import {eventOpenBasket} from "../modules/events";
 
 
 const styles = () => ({
@@ -26,6 +27,11 @@ const styles = () => ({
 
 class IShop extends React.PureComponent {
 
+    handleCloseBasket = () => {
+        console.log('emit');
+        eventOpenBasket.emit('EClosedBasket');
+    };
+
     render() {
         const { classes } = this.props;
         return(
@@ -33,7 +39,7 @@ class IShop extends React.PureComponent {
                 <div className={classes.root}>
                     <Header/>
                     <BrowserRouter>
-                        <div>
+                        <div onClick={this.handleCloseBasket}>
                             <LeftMenu/>
                             <Content/>
                         </div>

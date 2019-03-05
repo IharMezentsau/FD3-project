@@ -2,6 +2,9 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var ImageminPlugin = require('imagemin-webpack-plugin').default;
 let isProd = process.env.NODE_ENV === 'production';
+
+const baseUrl = "/";
+
 const ExtractSass = new ExtractTextPlugin({
     filename: "[name].[contenthash].css",
     disable: process.env.NODE_ENV === "development"
@@ -15,6 +18,7 @@ module.exports = {
     },
     devtool:'source-map',
     devServer: {
+        publicPath: baseUrl,
         contentBase: './src/',
         watchContentBase: true,
         inline: true,
@@ -67,6 +71,7 @@ module.exports = {
     plugins: [
         new ExtractTextPlugin("[name].bundle.[hash].css"),
         new HtmlWebpackPlugin({
+            baseUrl: baseUrl,
             template: './src/index.html',
             filename: './index.html',
             inject: "body"

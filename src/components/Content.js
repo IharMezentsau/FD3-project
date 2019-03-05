@@ -31,7 +31,7 @@ const styles = theme => ({
 });
 
 import './Content.scss';
-import Mobile from "./Mobile";
+import Mobile from "./Product";
 
 class Content extends React.Component {
 
@@ -43,18 +43,12 @@ class Content extends React.Component {
     render() {
         return(
 
-            <main
-                className={classNames(this.props.classes.content)}
-            >
-
-                <Route path="/" exact component={Home} />
-
-                <Route path="/notebooks" component={GridItems} />
-                <Route path="/notebook/:prodid" component={GridItems} />
-                <Route path="/contacts" component={GridItems} />
-                <Route path="/:type" component={GridItems} />
-                <Route path="/:type/:prodid" component={GridItems} />
-
+            <main className={classNames(this.props.classes.content)}>
+                <Switch>
+                    <Route exact path="/" component={Home} />
+                    <Route  path="/:type/:prodid?" component={GridItems} />
+                    <Route exact path="/" component={Home} />
+                </Switch>
             </main>
 
         );

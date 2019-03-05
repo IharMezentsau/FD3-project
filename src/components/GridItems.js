@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import CardList from './CardList';
-import Mobile from './Mobile';
+import Product from './Product';
 
 import './GridItems.scss';
 
@@ -46,12 +46,11 @@ class GridItems extends React.PureComponent {
     // };
 
     componentDidMount() {
-        this.props.dispatch( itemsThunk(this.props.dispatch, this.props.match.url) );
+        this.props.dispatch( itemsThunk(this.props.dispatch, this.props.match.params) );
     }
 
     render() {
         const { classes, status, items } = this.props;
-        console.log(this.props);
 
         let itemsTag;
         if ( status <= 1 ) {
@@ -61,7 +60,8 @@ class GridItems extends React.PureComponent {
         } else {
             itemsTag = items.map(item => (
                  <Grid key={`GridItem${item._id}`} item >
-                     <CardList device={item} type={this.props.match.url}/>
+                     {!this.props.match.params.prodid ?  <CardList device={item} type={this.props.match.url}/> :
+                         <Product device={item}/>}
                  </Grid>
             ));
         };

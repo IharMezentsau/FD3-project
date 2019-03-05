@@ -58,7 +58,8 @@ const styles = theme => ({
 });
 
 import './Header.scss';
-import eventSwitchLeftMenu from "../modules/events";
+import {eventSwitchLeftMenu, eventOpenBasket} from "../modules/events";
+import {removeItemToCart} from "../actions/cart";
 
 class Header extends React.PureComponent{
     static propTypes = {
@@ -75,8 +76,14 @@ class Header extends React.PureComponent{
         this.setState({ anchorEl: event.currentTarget });
     };
 
-    handleClose = () => {
-        this.setState({ anchorEl: false });
+    deleteItemFromBasket = (id) => {
+        removeItemToCart(id);
+    };
+
+    handleClose =()=> {
+        console.log('set');
+        console.log(this);
+        this.setState({ anchorEl: null });
     };
 
     setIsOpenLeftMenu = (isOpen) => {
@@ -85,10 +92,12 @@ class Header extends React.PureComponent{
 
     componentDidMount() {
         eventSwitchLeftMenu.addListener('ESetClosedLeftMenu', this.setIsOpenLeftMenu);
+        eventOpenBasket.addListener('EClosedBasket', this.handleClose);
     };
 
     componentWillUnmount() {
         eventSwitchLeftMenu.removeListener('ESetClosedLeftMenu', this.setIsOpenLeftMenu);
+        eventOpenBasket.removeListener('EClosedBasket', this.handleClose);
     };
 
     handleDrawerOpen = () => {
@@ -103,8 +112,9 @@ class Header extends React.PureComponent{
             isOpenBasket = Boolean(anchorEl),
             isOpen = this.state.isOpenLeftMenu,
             {cart} = this.props,
-            itemsBasket = cart.items.map((item, i) => <MenuItem  key={`menuItem-${item._id + i}`}>
-                <img width="40" height="40" alt={`logo-${item.title}`} src={item.img}  />{item.title}
+            itemsBasket = cart.items.map((item, i) => <MenuItem onClick={() => this.deleteItemFromBasket(item._id)}
+                                                                key={`menuItem-${item._id + i}`}>
+                    <img width="40" height="40" alt={`logo-${item.title}`} src={item.img}  />{item.title}
                 </MenuItem>
             ),
             total = cart.items.reduce(((accumulator, currentValue) => accumulator + currentValue.price), 0);
@@ -154,7 +164,6 @@ class Header extends React.PureComponent{
                                 horizontal: 'right',
                             }}
                             open={isOpenBasket}
-                            onClose={this.handleClose}
                         >
                             {itemsBasket}
                         </Menu>

@@ -1,15 +1,11 @@
 var express = require('express');
 var router = express.Router();
 
-// Require the controllers WHICH WE DID NOT CREATE YET!!
-var product_controller = require('../controllers/product');
+var mobile_controller = require('../controllers/mobile');
+var notebook_controller = require('../controllers/notebook');
 
+router.get('/mobiles/', mobile_controller.product_details);
 
-// a simple test url to check that all of our files are communicating correctly.
-router.get('/test', product_controller.test);
-
-router.get('/mobiles/', product_controller.product_details);
-
-
+router.get('/notebooks/', notebook_controller.product_details);
 
 module.exports = router;

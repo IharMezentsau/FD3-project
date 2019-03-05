@@ -19,5 +19,4 @@ var MobileSchema = new Schema({
         collection: "mobile"
 });
 
-// Export the model
 module.exports = mongoose.model('mobile', MobileSchema);

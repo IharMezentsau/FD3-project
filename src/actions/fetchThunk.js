@@ -2,11 +2,12 @@ import isoFetch from 'isomorphic-fetch';
 
 import { itemsLoading, itemsError, itemsSet } from "./items";
 
-const itemsThunk = (dispatch, query) => {
+const itemsThunk = (dispatch, params) => {
     return function() {
-        console.log(query);
-        dispatch( itemsLoading() );//`http://localhost:3000/shop/${query}`
-        isoFetch(`http://localhost:3000/shop${query}`)
+        dispatch( itemsLoading() );
+        let query = ((params.prodid !== undefined) && (params.prodid !== null)) ?
+                `${params.type}/${params.prodid}` : params.type;
+        isoFetch(`http://localhost:3000/shop/${query}`)
             .then( (response) => { // response - HTTP-ответ
                 if (!response.ok) {
                     let Err = new Error("fetch error " + response.status);

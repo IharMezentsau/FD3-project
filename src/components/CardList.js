@@ -27,7 +27,6 @@ const styles = {
         maxWidth: 240,
         maxHeight: 200,
         marginLeft: 'auto',
-
         marginRight: 'auto',
     },
 };
@@ -43,35 +42,39 @@ class CardList extends React.PureComponent{
             text: PropTypes.string.isRequired,
             price: PropTypes.number,
         }),
-        type: PropTypes.string.isRequired,
     };
 
     addToCard = () => {
         this.props.dispatch( addItemToCart(this.props.device) );
     };
 
+    getFromLink = (link) => {
+        this.props.dispatch( itemsThunk(this.props.dispatch, link) );
+    };
+
     render() {
-        let {type, classes, device} = this.props,
-            link = `${type.slice(0, -1)}/${device._id}`;
+        let {classes, device} = this.props;
         return (
             <Card className={classes.card}>
-                <CardActionArea>
-                    <CardMedia
-                        component="img"
-                        alt={`logo-${device.title}`}
-                        className={classes.media}
-                        image={device.img}
-                        title={device.title}
-                    />
-                    <CardContent>
-                        <Typography gutterBottom variant="h5" component="h2">
-                            {device.title}
-                        </Typography>
-                        <Typography component="p">
-                            {device.text}
-                        </Typography>
-                    </CardContent>
-                </CardActionArea>
+                <NavLink to={`/mobiles/${device._id}`} exact className="PageLink" activeClassName="ActivePageLink">
+                    <CardActionArea onClick={() => this.getFromLink(device._id)}>
+                        <CardMedia
+                            component="img"
+                            alt={`logo-${device.title}`}
+                            className={classes.media}
+                            image={device.img}
+                            title={device.title}
+                        />
+                        <CardContent>
+                            <Typography gutterBottom variant="h5" component="h2">
+                                {device.title}
+                            </Typography>
+                            <Typography component="p">
+                                {device.text}
+                            </Typography>
+                        </CardContent>
+                    </CardActionArea>
+                </NavLink>
                 <CardActions>
                     <Tooltip disableFocusListener disableTouchListener title="Add to basket">
                         <Button size="small" color="primary" onClick={this.addToCard}>

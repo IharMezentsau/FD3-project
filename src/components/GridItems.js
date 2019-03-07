@@ -29,25 +29,41 @@ const styles = theme => ({
 });
 
 class GridItems extends React.PureComponent {
-    // static propTypes = {
-    //     itemsArray: PropTypes.arrayOf(PropTypes.shape({
-    //         title: PropTypes.string.isRequired,
-    //         img: PropTypes.string.isRequired,
-    //         text: PropTypes.string.isRequired,
-    //         price: PropTypes.number,
-    //         sizeScreen: PropTypes.number.isRequired,
-    //         technologyScreen: PropTypes.string.isRequired,
-    //         os: PropTypes.string,
-    //         ram: PropTypes.number,
-    //         flashMemory: PropTypes.number,
-    //         camera: PropTypes.number,
-    //         color: PropTypes.string,
-    //     })),
-    // };
+     static propTypes = {
+        items: PropTypes.arrayOf(PropTypes.shape({
+            title: PropTypes.string.isRequired,
+            img: PropTypes.string.isRequired,
+            text: PropTypes.string.isRequired,
+            price: PropTypes.number,
+            sizeScreen: PropTypes.number.isRequired,
+            technologyScreen: PropTypes.string.isRequired,
+            os: PropTypes.string,
+            ram: PropTypes.number,
+            flashMemory: PropTypes.number,
+            camera: PropTypes.number,
+            color: PropTypes.string,
+        })),
+    };
 
     componentDidMount() {
-        this.props.dispatch( itemsThunk(this.props.dispatch, this.props.match.params) );
+        this.props.dispatch( itemsThunk(this.props.dispatch) );
     }
+
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     let newTypeContent = false;
+    //     if (nextProps.match.params.type != this.state.typeContent) {
+    //         this.setState({typeContent: nextProps.match.params.type});
+    //         newTypeContent = true;
+    //     }
+    //     return newTypeContent;
+    // }
+    // componentWillReceiveProps(nextProps) {
+    //     this.setState({typeContent: nextProps.match.params.type});
+    //     this.props.dispatch( itemsThunk(this.props.dispatch, nextProps.match.params) );
+    // }
+    //componentWillUpdate(nextProps, nextState) {
+        //this.props.dispatch( itemsThunk(this.props.dispatch, this.props.match.params) );
+    //}
 
     render() {
         const { classes, status, items } = this.props;
@@ -60,16 +76,16 @@ class GridItems extends React.PureComponent {
         } else {
             itemsTag = items.map(item => (
                  <Grid key={`GridItem${item._id}`} item >
-                     {!this.props.match.params.prodid ?  <CardList device={item} type={this.props.match.url}/> :
+                     {!this.props.match.params.prodid ?  <CardList device={item}/> :
                          <Product device={item}/>}
                  </Grid>
             ));
         };
 
         return (
-            <Grid container className={classes.root} spacing={16} >
+            <Grid container className={classes.root} spacing={16}>
                 <Grid item xs={12}>
-                    <Grid container justify="center" spacing={spacing} >
+                    <Grid container justify="center" spacing={spacing}>
                         {itemsTag}
                     </Grid>
                 </Grid>

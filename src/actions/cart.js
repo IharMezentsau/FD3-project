@@ -7,7 +7,7 @@ const addItemToCart = items => ({
 });
 
 const removeItemToCart = items => ({
-    type: ADD_ITEM_TO_CART,
+    type: REMOVE_ITEM_FROM_CART,
     payload: items
 });
 

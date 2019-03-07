@@ -9,6 +9,7 @@ import { withStyles } from '@material-ui/core/styles';
 import CardList from './CardList';
 import GridItems from './GridItems';
 import Home from './Home';
+import Product from './Product';
 
 
 const styles = theme => ({
@@ -33,6 +34,8 @@ const styles = theme => ({
 import './Content.scss';
 import Mobile from "./Product";
 
+import Basket from "./Basket";
+
 class Content extends React.Component {
 
     static propTypes = {
@@ -42,12 +45,13 @@ class Content extends React.Component {
 
     render() {
         return(
-
             <main className={classNames(this.props.classes.content)}>
                 <Switch>
                     <Route exact path="/" component={Home} />
-                    <Route  path="/:type/:prodid?" component={GridItems} />
-                    <Route exact path="/" component={Home} />
+                    <Route path="/basket" component={Basket} />
+                    <Route path="/mobiles/:prodid" component={Product} />
+                    <Route path="/mobiles" component={GridItems} />
+                    <Route path="/notebooks/:prodid?" component={GridItems} />
                 </Switch>
             </main>
 

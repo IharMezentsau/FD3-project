@@ -1,13 +1,14 @@
 import isoFetch from 'isomorphic-fetch';
 
 import { itemsLoading, itemsError, itemsSet } from "./items";
+//import { itemsLoading, itemsError, itemsSet } from "./product";
 
 const itemsThunk = (dispatch, params) => {
     return function() {
         dispatch( itemsLoading() );
-        let query = ((params.prodid !== undefined) && (params.prodid !== null)) ?
-                `${params.type}/${params.prodid}` : params.type;
-        isoFetch(`http://localhost:3000/shop/${query}`)
+        let search = window.location.search !== undefined ? window.location.search : "",
+            id = params !== undefined ? `/${params}` : "";
+        isoFetch(`http://localhost:3000/shop${window.location.pathname + id + search}`)
             .then( (response) => { // response - HTTP-ответ
                 if (!response.ok) {
                     let Err = new Error("fetch error " + response.status);
@@ -18,7 +19,6 @@ const itemsThunk = (dispatch, params) => {
                     return response.json();
             })
             .then( (data) => {
-                console.log(data);
                 dispatch( itemsSet(data) );
             })
             .catch( (error) => {

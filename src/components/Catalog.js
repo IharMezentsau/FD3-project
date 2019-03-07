@@ -13,9 +13,14 @@ import Home from '@material-ui/icons/Home';
 import { NavLink } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 
+import { itemsThunk } from "../actions/fetchThunk";
 import './Catalog.scss';
 
 class Catalog extends React.PureComponent {
+    getFromLink = () => {
+        this.props.dispatch( itemsThunk(this.props.dispatch) );
+    };
+
     render() {
         return(
             <Typography component="div" dir="ltr" style={{ padding: 8 * 3 }}>
@@ -27,24 +32,15 @@ class Catalog extends React.PureComponent {
                         </ListItem>
                     </NavLink>
                     <NavLink to="/mobiles" exact className="PageLink" activeClassName="ActivePageLink">
-                        <ListItem button key='key-MobilePhones' >
+                        <ListItem button key='key-MobilePhones' onClick={this.getFromLink}>
                             <ListItemIcon><PhoneIcon /></ListItemIcon>
                             <ListItemText primary='Mobile Phones' />
                         </ListItem>
                     </NavLink>
                     <NavLink to="/notebooks" exact className="PageLink" activeClassName="ActivePageLink">
-                        <ListItem button key='key-Notebooks'>
+                        <ListItem button key='key-Notebooks' onClick={this.getFromLink}>
                             <ListItemIcon><NotebookIcon /></ListItemIcon>
                             <ListItemText primary='Notebooks' />
-                        </ListItem>
-                    </NavLink>
-                </List>
-                <Divider />
-                <List>
-                    <NavLink to="/contacts" exact className="PageLink" activeClassName="ActivePageLink">
-                        <ListItem button key='key-Contacts'>
-                            <ListItemIcon><ContactIcon /></ListItemIcon>
-                            <ListItemText primary='Contacts' />
                         </ListItem>
                     </NavLink>
                 </List>

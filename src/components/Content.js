@@ -17,7 +17,14 @@ const styles = theme => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
-        marginLeft: 0,
+        marginLeft: -240,
+    },
+    drawerHeader: {
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 8px',
+        ...theme.mixins.toolbar,
+        justifyContent: 'flex-end',
     },
 });
 
@@ -34,6 +41,7 @@ class Content extends React.Component {
 
         return(
             <main className={classNames(classes.content)}>
+                <div className={classes.drawerHeader} />
                 <Switch>
                     <Route exact path="/" component={Home} />
                     <Route exact path="/basket" component={Basket} />

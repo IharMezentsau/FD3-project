@@ -35,14 +35,15 @@ const drawerWidth = 240,
             }),
         },
         menuButton: {
-            marginLeft: 20,
+            marginLeft: 12,
             marginRight: 20,
         },
         hide: {
             display: 'none',
         },
         chip: {
-            margin: theme.spacing.unit,
+            position: "absolute",
+            right: 60
         },
         badge: {
             top: '50%',
@@ -51,6 +52,10 @@ const drawerWidth = 240,
                 theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[900]
                 }`,
         },
+        button: {
+            position: "absolute",
+            right: 5
+        }
     });
 
 import './Header.scss';
@@ -92,15 +97,17 @@ class Header extends React.PureComponent{
         this.setIsOpenLeftMenu(isOpen);
     };
 
+    totalCount = () => {
+        return this.props.cart.items.reduce((accumulator, currentValue) => accumulator + currentValue.price, 0);
+    };
+
     render(){
-        const { classes } = this.props;
-        let { anchorEl } = this.state,
+        let { classes, cart } = this.props,
+            { anchorEl } = this.state,
             isOpenBasket = Boolean(anchorEl),
             isOpen = this.state.isOpenLeftMenu,
-            {cart} = this.props,
-            total = 0,
+            total = this.totalCount(),
             itemsBasket = cart.items.map((item, i) => {
-                total += item.price;
                 return <MenuItem key={`menuItem-${item._id + i}`}>
                         <img width="40" height="40" alt={`logo-${item.title}`} src={item.img}  />{item.title}
                     </MenuItem>;
@@ -109,26 +116,24 @@ class Header extends React.PureComponent{
         return(
             <Fragment>
                 <CssBaseline />
-                <AppBar position="static" className={classNames(classes.appBar, {[classes.appBarShift]: isOpen,})}>
+                <AppBar position="fixed" className={classNames(classes.appBar, {[classes.appBarShift]: isOpen,})}>
                     <Toolbar disableGutters={!isOpen}>
                         <IconButton color="inherit" aria-label="Menu" onClick={this.handleDrawerOpen}
                             className={classNames(classes.menuButton, isOpen && classes.hide)}>
                             <MenuIcon />
                         </IconButton>
-                        <Typography variant="h6" color="inherit">
+                        <Typography variant="h6" color="inherit" className={classNames(classes.menuButton, isOpen && classes.hide)}>
                             Shop
                         </Typography>
-                        <div className="MenuBTN">
-                            <Chip label={`Total: ${total}BYN`} className={classes.chip} />
-                            <IconButton aria-owns={isOpenBasket ? 'menu-appbar' : undefined} aria-haspopup="true"
+                        <Chip label={`Total: ${total}BYN`} className={classes.chip} />
+                        <IconButton aria-owns={isOpenBasket ? 'menu-appbar' : undefined} aria-haspopup="true"
                                 onClick={this.handleMenu} color="inherit" aria-label="menu-appbar"
-                                className={classNames(classes.menuButton)}>
-                                <Badge badgeContent={cart.items.length} color="primary"
-                                       classes={{ badge: classes.badge }}>
-                                    <ShoppingCartIcon />
-                                </Badge>
-                            </IconButton>
-                        </div>
+                                className={classes.button}>
+                            <Badge badgeContent={cart.items.length} color="primary"
+                                   classes={{ badge: classes.badge }}>
+                                <ShoppingCartIcon />
+                            </Badge>
+                        </IconButton>
                         <Menu id="menu-appbar" anchorEl={anchorEl} anchorOrigin={{vertical: 'top', horizontal: 'right'}}
                             transformOrigin={{vertical: 'top', horizontal: 'right'}} open={isOpenBasket}
                             onClose={this.handleClose}>

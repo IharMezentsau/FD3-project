@@ -14,7 +14,7 @@ import './IShop.scss';
 
 const styles = ({
     root: {
-        width: '100%',
+        display: 'flex',
     },
 });
 

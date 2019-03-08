@@ -21,8 +21,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.use('/', express.static(absolutePath));
-app.use('/mobiles/*', express.static(absolutePath));
-app.use('/notebooks/*', express.static(absolutePath));
+app.use('/mobiles', express.static(absolutePath));
+app.use('/notebooks', express.static(absolutePath));
 app.use('/basket', express.static(absolutePath));
 
 app.use('/shop', product);

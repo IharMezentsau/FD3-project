@@ -13,15 +13,15 @@ import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import Tooltip from '@material-ui/core/Tooltip';
 import { NavLink } from 'react-router-dom';
 
-import './CardList.scss';
 import {addItemToCart} from "../actions/cart";
 import {itemsThunk} from "../actions/fetchThunk";
+
+import './CardList.scss';
 
 const styles = {
     card: {
         maxHeight: 400,
         textAlign: 'center',
-        //maxWidth: 240,
     },
     media: {
         maxWidth: 240,
@@ -42,29 +42,27 @@ class CardList extends React.PureComponent{
             text: PropTypes.string.isRequired,
             price: PropTypes.number,
         }),
+        type: PropTypes.string.isRequired,
     };
 
     addToCard = () => {
         this.props.dispatch( addItemToCart(this.props.device) );
     };
 
-    getFromLink = (link) => {
-        this.props.dispatch( itemsThunk(this.props.dispatch, link) );
+    getFromLink = (params) => {
+        this.props.dispatch( itemsThunk(this.props.dispatch, params) );
     };
 
     render() {
-        let {classes, device} = this.props;
+        let {classes, device, type} = this.props;
+
         return (
             <Card className={classes.card}>
-                <NavLink to={`/mobiles/${device._id}`} exact className="PageLink" activeClassName="ActivePageLink">
-                    <CardActionArea onClick={() => this.getFromLink(device._id)}>
-                        <CardMedia
-                            component="img"
-                            alt={`logo-${device.title}`}
-                            className={classes.media}
-                            image={device.img}
-                            title={device.title}
-                        />
+                <NavLink to={`/${type}/${device._id}`} exact
+                         className="PageLink" activeClassName="ActivePageLink">
+                    <CardActionArea onClick={() => this.getFromLink({type: type, id: device._id})}>
+                        <CardMedia component="img" alt={`logo-${device.title}`} className={classes.media}
+                                   image={device.img} title={device.title}/>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="h2">
                                 {device.title}
@@ -88,8 +86,8 @@ class CardList extends React.PureComponent{
     }
 }
 
-const mapStateToProps = ({cart}) => ({
-    cart: cart,
+const mapStateToProps = ({}) => ({
+
 });
 
 export default connect(mapStateToProps)(withStyles(styles)(CardList));

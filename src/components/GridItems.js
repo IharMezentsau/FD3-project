@@ -7,24 +7,14 @@ import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import CardList from './CardList';
-import Product from './Product';
+import { itemsThunk } from "../actions/fetchThunk";
+import { catalogSet } from "../actions/catalog";
 
 import './GridItems.scss';
 
-import { itemsThunk } from "../actions/fetchThunk";
-import {itemsLoading} from "../actions/items";
-
-const spacing = 16;
-const styles = theme => ({
+const styles = ({
     root: {
         flexGrow: 1,
-    },
-    paper: {
-        height: 140,
-        width: 100,
-    },
-    control: {
-        padding: theme.spacing.unit * 2,
     },
 });
 
@@ -43,27 +33,18 @@ class GridItems extends React.PureComponent {
             camera: PropTypes.number,
             color: PropTypes.string,
         })),
+        classes: PropTypes.object.isRequired,
+        status: PropTypes.number.isRequired,
     };
 
     componentDidMount() {
-        this.props.dispatch( itemsThunk(this.props.dispatch) );
-    }
+        this.props.dispatch( itemsThunk(this.props.dispatch, {type: this.props.match.params.type}) );
+        this.props.dispatch( catalogSet(this.props.match.params.type) );
+    };
 
-    // shouldComponentUpdate(nextProps, nextState) {
-    //     let newTypeContent = false;
-    //     if (nextProps.match.params.type != this.state.typeContent) {
-    //         this.setState({typeContent: nextProps.match.params.type});
-    //         newTypeContent = true;
-    //     }
-    //     return newTypeContent;
-    // }
-    // componentWillReceiveProps(nextProps) {
-    //     this.setState({typeContent: nextProps.match.params.type});
-    //     this.props.dispatch( itemsThunk(this.props.dispatch, nextProps.match.params) );
-    // }
-    //componentWillUpdate(nextProps, nextState) {
-        //this.props.dispatch( itemsThunk(this.props.dispatch, this.props.match.params) );
-    //}
+    componentWillUnmount() {
+        this.props.dispatch( catalogSet(null) );
+    };
 
     render() {
         const { classes, status, items } = this.props;
@@ -76,8 +57,7 @@ class GridItems extends React.PureComponent {
         } else {
             itemsTag = items.map(item => (
                  <Grid key={`GridItem${item._id}`} item >
-                     {!this.props.match.params.prodid ?  <CardList device={item}/> :
-                         <Product device={item}/>}
+                     <CardList device={item} type={this.props.match.params.type}/>
                  </Grid>
             ));
         };
@@ -85,30 +65,19 @@ class GridItems extends React.PureComponent {
         return (
             <Grid container className={classes.root} spacing={16}>
                 <Grid item xs={12}>
-                    <Grid container justify="center" spacing={spacing}>
+                    <Grid container justify="center" spacing={16}>
                         {itemsTag}
                     </Grid>
                 </Grid>
             </Grid>
         );
     }
-}
+};
 
-{/*<Grid container className={classes.root} spacing={16}>*/}
-    {/*<Grid item xs={12}>*/}
-        {/*<Grid container className={classes.demo} justify="center" spacing={Number(spacing)}>*/}
-            {/*{[0, 1, 2].map(value => (*/}
-                {/*<Grid key={value} item>*/}
-                    {/*<Paper className={classes.paper} />*/}
-                {/*</Grid>*/}
-            {/*))}*/}
-        {/*</Grid>*/}
-    {/*</Grid>*/}
-{/*</Grid>*/}
-
-const mapStateToProps = ({items}) => ({
+const mapStateToProps = ({items, catalog}) => ({
     items: items.data,
     status: items.status,
+    catalog: catalog.data,
 });
 
 export default connect(mapStateToProps)(withStyles(styles)(GridItems));

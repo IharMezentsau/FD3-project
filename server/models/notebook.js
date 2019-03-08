@@ -1,7 +1,6 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-
-var NotebookSchema = new Schema({
+var mongoose = require('mongoose'),
+    Schema = mongoose.Schema,
+    NotebookSchema = new Schema({
         title: {type: String, required: true},
         img: {type: String, required: true},
         text: {type: String, required: true},

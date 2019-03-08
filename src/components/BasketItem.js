@@ -1,20 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Typography from '@material-ui/core/Typography';
-import ButtonBase from '@material-ui/core/ButtonBase';
 import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-import Icon from '@material-ui/core/Icon';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Paper from '@material-ui/core/Paper';
-import './BasketItem.scss';
 import {connect} from "react-redux";
 import {removeItemToCart} from "../actions/cart";
+
+import './BasketItem.scss';
 
 const styles = theme => ({
     root: {
@@ -25,15 +20,11 @@ const styles = theme => ({
         margin: 'auto',
         maxWidth: "auto",
     },
-    image: {
-        width: "auto",
-        height: "auto",
-    },
     img: {
         margin: 'auto',
         display: 'block',
-        maxWidth: '100%',
-        maxHeight: '100%',
+        maxWidth: 240,
+        maxHeight: 300,
     },
 });
 
@@ -55,6 +46,7 @@ class BasketItem extends React.PureComponent{
 
     render() {
         let {classes, device} = this.props;
+
         return (
             <div className={classes.root}>
                 <Paper className={classes.paper}>
@@ -86,8 +78,8 @@ class BasketItem extends React.PureComponent{
     }
 }
 
-const mapStateToProps = ({cart}) => ({
-    cart: cart.items,
+const mapStateToProps = () => ({
+
 });
 
 export default connect(mapStateToProps)(withStyles(styles)(BasketItem));

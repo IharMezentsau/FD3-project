@@ -26,7 +26,7 @@ export default (state = initialState, action) => {
         case PRODUCT_SET: {
             let newState = {
                 status: 3,
-                data: action.data,
+                data: action.data.length !== 0 ? action.data[0] : null,
             };
             return newState;
         }

@@ -30,12 +30,12 @@ app.use('/shop', product);
 app.get('/*', (req, res) => {
     let rt = `${__dirname}/${req.url}`;
     fs.readFile(rt, function (err, data) {
-        if (err) {
-            res.redirect('/');
-        }
-        else {
+        //if (err) {
+        //    res.redirect('/');
+        //}
+        //else {
             res.sendFile(rt);
-        }
+        //}
     });
 
 });

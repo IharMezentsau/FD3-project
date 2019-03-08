@@ -27,18 +27,18 @@ app.use('/basket', express.static(absolutePath));
 
 app.use('/shop', product);
 
-app.get('/*', (req, res) => {
-    let rt = `${__dirname}/${req.url}`;
-    fs.readFile(rt, function (err, data) {
-        if (err) {
-            res.redirect('/');
-        }
-        else {
-            res.sendFile(rt);
-        }
-    });
-
-});
+// app.get('/*', (req, res) => {
+//     let rt = `${__dirname}/${req.url}`;
+//     fs.readFile(rt, function (err, data) {
+//         if (err) {
+//             res.redirect('/');
+//         }
+//         else {
+//             res.sendFile(rt);
+//         }
+//     });
+//
+// });
 
 app.listen(port, () => {
     console.log('Server is up and running on port number ' + port);

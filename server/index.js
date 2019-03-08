@@ -21,8 +21,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.use('/', express.static(absolutePath));
-app.use('/mobiles/', express.static(absolutePath));
-app.use('/notebooks/', express.static(absolutePath));
+app.use('/mobiles/*', express.static(absolutePath));
+app.use('/notebooks/*', express.static(absolutePath));
 app.use('/basket', express.static(absolutePath));
 
 app.use('/shop', product);
@@ -30,12 +30,12 @@ app.use('/shop', product);
 app.get('/*', (req, res) => {
     let rt = `${__dirname}/${req.url}`;
     fs.readFile(rt, function (err, data) {
-        //if (err) {
-        //    res.redirect('/');
-        //}
-        //else {
+        if (err) {
+            res.redirect('/');
+        }
+        else {
             res.sendFile(rt);
-        //}
+        }
     });
 
 });

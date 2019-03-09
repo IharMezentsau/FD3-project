@@ -27,22 +27,21 @@ app.use('/basket', express.static(absolutePath));
 
 app.use('/shop', product);
 
-//app.get('/*', (req, res) => {
-    // let rt = `${__dirname}/${req.url}`;
+app.get('/*', (req, res) => {
+     let rt = `${__dirname}/${req.url}`;
     // if (fs.statSync(tr).isDirectory()) {
     //     res.sendFile(rt);
     // } else {
     //     app.use('/shop', product);
     // }
-  //  fs.readFile(rt, function (err, data) {
-    //    if (err) {
-      //      res.redirect('/');
-        //}
-        //else {
-          //  res.sendFile(rt);
-        //}
+    fs.readFile(rt, function (err, data) {
+        if (err) {
+            res.redirect('/');
+        }
+        else {
+            res.sendFile(rt);
+        }
     });
-
 });
 
 app.listen(port, () => {

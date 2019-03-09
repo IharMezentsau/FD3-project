@@ -87,7 +87,7 @@ class LeftMenu extends React.PureComponent {
                     </IconButton>
                 </div>
                 <Divider />
-                <Tabs value={this.state.value} onChange={this.handleChange} variant="fullWidth">
+                <Tabs value={this.state.value}  onChange={this.handleChange} variant="fullWidth">
                     <Tab label="Catalog"/>
                     {haveCatalog && <Tab label="Filter" />}
                 </Tabs>

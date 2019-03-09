@@ -21,6 +21,9 @@ const styles = theme => ({
             marginRight: theme.spacing.unit,
             width: '40%',
         },
+        margin: {
+            marginTop: 20,
+        }
 });
 
 class Filter extends React.PureComponent {

@@ -21,6 +21,7 @@ import {eventSwitchLeftMenu} from "../modules/events";
 const drawerWidth = 240,
     styles = theme => ({
         appBar: {
+            height: 60,
             transition: theme.transitions.create(['margin', 'width'], {
                 easing: theme.transitions.easing.sharp,
                 duration: theme.transitions.duration.leavingScreen,

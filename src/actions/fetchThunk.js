@@ -25,7 +25,7 @@ const itemsThunk = (dispatch, params) => {
             })
             .catch( (error) => {
                 console.error(error);
-                dispatch( id !== "" ? productError(data) : itemsError(data) );
+                dispatch( id !== "" ? productError() : itemsError() );
             })
         ;
     }

@@ -16,6 +16,10 @@ const styles = ({
     root: {
         flexGrow: 1,
     },
+    paper: {
+        maxHeight: 360,
+        width: 200,
+    },
 });
 
 class GridItems extends React.PureComponent {
@@ -56,7 +60,7 @@ class GridItems extends React.PureComponent {
             itemsTag = "ошибка загрузки данных";
         } else {
             itemsTag = items.map(item => (
-                 <Grid key={`GridItem${item._id}`} item >
+                 <Grid key={`GridItem${item._id}`} className={classes.paper} item >
                      <CardList device={item} type={this.props.match.params.type}/>
                  </Grid>
             ));

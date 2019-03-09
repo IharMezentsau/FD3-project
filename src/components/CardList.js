@@ -20,12 +20,13 @@ import './CardList.scss';
 
 const styles = {
     card: {
-        maxHeight: 400,
+        maxHeight: 360,
+        maxWidth: 240,
         textAlign: 'center',
     },
     media: {
         maxWidth: 240,
-        maxHeight: 200,
+        maxHeight: 180,
         marginLeft: 'auto',
         marginRight: 'auto',
     },
@@ -58,13 +59,12 @@ class CardList extends React.PureComponent{
 
         return (
             <Card className={classes.card}>
-                <NavLink to={`/${type}/${device._id}`} exact
-                         className="PageLink" activeClassName="ActivePageLink">
+                <NavLink to={`/${type}/${device._id}`} exact className="Link">
                     <CardActionArea onClick={() => this.getFromLink({type: type, id: device._id})}>
                         <CardMedia component="img" alt={`logo-${device.title}`} className={classes.media}
                                    image={device.img} title={device.title}/>
                         <CardContent>
-                            <Typography gutterBottom variant="h5" component="h2">
+                            <Typography gutterBottom variant="h6" component='p' >
                                 {device.title}
                             </Typography>
                             <Typography component="p">

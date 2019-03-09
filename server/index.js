@@ -21,12 +21,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.use('/', express.static(absolutePath));
-//app.use('/mobiles', express.static(absolutePath));
-//app.use('/notebooks', express.static(absolutePath));
-//app.use('/basket', express.static(absolutePath));
-//app.use('/mobiles/*', express.static(absolutePath));
-//app.use('/notebooks/*', express.static(absolutePath));
-//app.use('/basket/*', express.static(absolutePath));
+app.use('/mobiles', express.static(absolutePath));
+app.use('/notebooks', express.static(absolutePath));
+app.use('/basket', express.static(absolutePath));
 
 app.use('/shop', product);
 
@@ -44,9 +41,9 @@ app.use('/shop', product);
         //else {
           //  res.sendFile(rt);
         //}
-    //});
+    });
 
-/});
+});
 
 app.listen(port, () => {
     console.log('Server is up and running on port number ' + port);
